@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NYSC Attendance - State Code System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <!-- Replace the src with your NYSC logo image -->
+                <img src="logo.png" alt="NYSC Logo" style="width: 70px; height: 70px; object-fit: contain; margin-bottom: 10px;">
+            </div>
+            <h1>ETI-OSA 3 NYSC Attendance</h1>
+            <p class="subtitle">State Code Attendance System</p>
+        </header>
+
+        <!-- Login Section -->
+        <div id="loginSection" class="section">
+            <div class="info-banner">
+                <p>📋 NYSC Attendance Login</p>
+                <small>Enter your details to mark attendance</small>
+            </div>
+            
+            <form id="loginForm">
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label for="fullName">👤 Full Name</label>
+                    <input type="text" id="fullName" placeholder="e.g., Olamilekan Adeyemi" required autofocus>
+                    <div class="hint">Enter your full name as registered with NYSC</div>
+                </div>
+
+                <!-- State Code -->
+                <div class="form-group">
+                    <label for="stateCode">🔑 State Code</label>
+                    <input type="text" id="stateCode" placeholder="e.g., LA/23A/1234" required>
+                    <div class="hint" id="codeHint">Enter your NYSC state code (Must be Lagos State - LA)</div>
+                </div>
+
+                <!-- CDS Group -->
+                <div class="form-group">
+                    <label for="cdsGroup">📚 CDS Group</label>
+                    <select id="cdsGroup" required>
+                        <option value="">Select your CDS Group</option>
+                        
+                        <!-- Monday-Thursday Groups -->
+                        <optgroup label="📅 Monday - Thursday Groups">
+                            <option value="Education">📖 Education</option>
+                            <option value="Health">🏥 Health</option>
+                            <option value="ICT">💻 ICT</option>
+                            <option value="Publicity">📢 Publicity</option>
+                            <option value="Culture & Tourism">🎭 Culture & Tourism</option>
+                            <option value="Construction">🏗️ Construction</option>
+                            <option value="Social Welfare">🤝 Social Welfare</option>
+                            <option value="Beautification">🌸 Beautification</option>
+                        </optgroup>
+                        
+                        <!-- Friday Groups -->
+                        <optgroup label="📢 Friday Groups">
+                            <option value="Agriculture">🌾 Agriculture</option>
+                            <option value="Arts & Crafts">🎨 Arts & Crafts</option>
+                            <option value="Business Development">💼 Business Development</option>
+                            <option value="Child Care">👶 Child Care</option>
+                            <option value="Community Policing">👮 Community Policing</option>
+                            <option value="Cooperative Society">🤝 Cooperative Society</option>
+                            <option value="Disaster Management">🚨 Disaster Management</option>
+                            <option value="Drug Abuse Prevention">🚫 Drug Abuse Prevention</option>
+                            <option value="Economic Empowerment">💰 Economic Empowerment</option>
+                            <option value="Education Support">📝 Education Support</option>
+                            <option value="Elderly Care">👴 Elderly Care</option>
+                            <option value="Entrepreneurship">🚀 Entrepreneurship</option>
+                            <option value="Environmental Sanitation">🌳 Environmental Sanitation</option>
+                            <option value="Family Planning">👨‍👩‍👧 Family Planning</option>
+                            <option value="Financial Literacy">📊 Financial Literacy</option>
+                            <option value="Food Security">🍲 Food Security</option>
+                            <option value="Gender Equality">⚖️ Gender Equality</option>
+                            <option value="HIV/AIDS Awareness">❤️ HIV/AIDS Awareness</option>
+                            <option value="Human Rights">🛡️ Human Rights</option>
+                            <option value="ICT Literacy">💻 ICT Literacy</option>
+                            <option value="Leadership Development">👔 Leadership Development</option>
+                            <option value="Legal Aid">⚖️ Legal Aid</option>
+                            <option value="Mental Health">🧠 Mental Health</option>
+                            <option value="Peace Building">🕊️ Peace Building</option>
+                            <option value="Public Health">🏥 Public Health</option>
+                            <option value="Rural Development">🏘️ Rural Development</option>
+                            <option value="Skills Acquisition">🔧 Skills Acquisition</option>
+                            <option value="Sports Development">⚽ Sports Development</option>
+                            <option value="Voter Education">🗳️ Voter Education</option>
+                            <option value="Water Sanitation">💧 Water Sanitation</option>
+                            <option value="Women Empowerment">👩 Women Empowerment</option>
+                            <option value="Youth Development">🧑‍🤝‍🧑 Youth Development</option>
+                        </optgroup>
+                    </select>
+                    <div class="hint">Select your Community Development Service group</div>
+                </div>
+
+                <button type="submit" class="btn-primary" id="loginBtn" disabled>
+                    <span class="btn-text">✅ Login & Continue</span>
+                    <span class="btn-loader" style="display:none;">⏳</span>
+                </button>
+            </form>
+        </div>
+
+        <!-- Attendance Section -->
+        <div id="attendanceSection" class="section" style="display:none;">
+            <div class="user-info">
+                <div>
+                    <h3>👋 Welcome, <span id="userName">Corper</span></h3>
+                    <p class="user-code">Code: <span id="displayStateCode"></span></p>
+                    <p class="user-state">📍 <span id="userState">State</span></p>
+                </div>
+                <button id="logoutBtn" class="btn-secondary">Logout</button>
+            </div>
+
+            <div class="attendance-card">
+                <div id="dayInfoDisplay" style="text-align:center; padding:10px; margin-bottom:12px; background:linear-gradient(135deg, #e8f5e9, #c8e6c9); border-radius:10px; font-size:13px; font-weight:600; color:#2e7d32; display:none; border:1px solid #a5d6a7;"></div>
+                
+                <div class="time-display">
+                    <div class="current-time">
+                        <span class="time-label">⏰ Current Time</span>
+                        <span id="currentTime" class="time-value">--:--:--</span>
+                    </div>
+                    <div class="current-date">
+                        <span id="currentDate" class="date-value">Loading...</span>
+                    </div>
+                </div>
+
+                <div class="location-status">
+                    <div class="status-indicator" id="locationStatus">
+                        <span class="status-dot"></span>
+                        <span class="status-text">Checking location...</span>
+                    </div>
+                    <div class="lg-info">
+                        <span class="lg-label">🏛️ Local Government:</span>
+                        <span id="lgName" class="lg-value">--</span>
+                    </div>
+                </div>
+
+                <button id="markAttendanceBtn" class="btn-attendance" disabled>
+                    <span class="btn-icon">📍</span>
+                    <span class="btn-text">Mark Attendance</span>
+                </button>
+
+                <div id="attendanceMessage" class="message"></div>
+            </div>
+
+            <div class="attendance-history">
+                <div class="history-header">
+                    <h3>📋 Today's Attendance</h3>
+                    <span class="record-count" id="recordCount">0 records</span>
+                    <button id="exportBtn" class="btn-export" onclick="exportToExcel()" style="display:none;">
+                        📊 Export
+                    </button>
+                </div>
+                <div id="historyList" class="history-list">
+                    <p class="no-history">No attendance records today</p>
+                </div>
+            </div>
+
+            <div class="quick-stats">
+                <div class="stat-box">
+                    <span class="stat-number" id="totalDays">0</span>
+                    <span class="stat-label">Days Present</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number" id="totalHours">0h</span>
+                    <span class="stat-label">Total Hours</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADMIN DASHBOARD SECTION -->
+        <div id="adminSection" class="section" style="display:none;">
+            <div class="admin-header">
+                <h2>📊 Admin Dashboard</h2>
+                <button id="closeAdminBtn" class="btn-secondary" style="background: #95a5a6;">Close Dashboard</button>
+            </div>
+
+            <!-- Dashboard Stats -->
+            <div class="dashboard-stats-grid">
+                <div class="dashboard-stat-card">
+                    <div class="dashboard-stat-icon">👥</div>
+                    <div>
+                        <div class="dashboard-stat-number" id="totalUsers">0</div>
+                        <div class="dashboard-stat-label">Total Users</div>
+                    </div>
+                </div>
+                <div class="dashboard-stat-card">
+                    <div class="dashboard-stat-icon">✅</div>
+                    <div>
+                        <div class="dashboard-stat-number" id="totalCheckinsAdmin">0</div>
+                        <div class="dashboard-stat-label">Total Check-ins</div>
+                    </div>
+                </div>
+                <div class="dashboard-stat-card">
+                    <div class="dashboard-stat-icon">🟢</div>
+                    <div>
+                        <div class="dashboard-stat-number" id="activeSessionsAdmin">0</div>
+                        <div class="dashboard-stat-label">Active Sessions</div>
+                    </div>
+                </div>
+                <div class="dashboard-stat-card">
+                    <div class="dashboard-stat-icon">📅</div>
+                    <div>
+                        <div class="dashboard-stat-number" id="totalDaysAdmin">0</div>
+                        <div class="dashboard-stat-label">Days Recorded</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Controls -->
+            <div class="admin-controls">
+                <button onclick="exportAllData()" class="btn-export-modern">📊 Export All Data</button>
+                <button onclick="resetAttendanceSystem()" class="btn-danger">🔄 Reset System</button>
+                <button onclick="clearAllRecords()" class="btn-warning">🗑️ Clear All Records</button>
+                <button onclick="refreshDashboard()" class="btn-info">🔄 Refresh Data</button>
+            </div>
+
+            <!-- Admin Records Table -->
+            <div class="admin-table-container">
+                <h3>📋 All Attendance Records</h3>
+                <div style="overflow-x: auto;">
+                    <table class="admin-table" id="adminRecordsTable">
+                        <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>Name</th>
+                                <th>State Code</th>
+                                <th>CDS Group</th>
+                                <th>Check In</th>
+                                <th>Check Out</th>
+                                <th>Duration</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminTableBody">
+                            <tr>
+                                <td colspan="9" style="text-align: center; padding: 40px; color: #95a5a6;">
+                                    Loading records...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- GROUP DASHBOARD -->
+            <div class="group-dashboard-container">
+                <h3>📚 Group Attendance Dashboard</h3>
+                <p class="group-dashboard-subtitle" id="groupDashboardSubtitle">Each CDS group has independent numbering starting from 2</p>
+                
+                <!-- Group Tabs -->
+                <div class="group-tabs" id="groupTabs">
+                    <button class="group-tab active" data-group="all">📊 All Groups</button>
+                </div>
+                
+                <!-- Group Stats Cards -->
+                <div class="group-stats-grid" id="groupStatsGrid">
+                    <!-- Dynamically populated -->
+                </div>
+                
+                <!-- Group Attendance Table -->
+                <div class="group-table-container">
+                    <div id="groupTableWrapper">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

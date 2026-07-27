@@ -1,0 +1,7 @@
+NYSC-Attendance-System/
+├── index.html          (Main HTML file - UPDATED with Admin Dashboard)
+├── style.css           (All CSS styles - UPDATED with Admin Dashboard styles)
+├── app.js              (All JavaScript code - UPDATED with Admin Dashboard functions)
+├── README.md           (Project documentation)
+└── assets/             (Optional: images, icons)
+    └── icons/
